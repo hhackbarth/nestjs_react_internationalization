@@ -283,76 +283,32 @@ curl http://localhost:3000/plural?count=3&lang=de
 **File**: `backend/src/app.service.ts`
 
 ```typescript
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
-import * as fs from 'fs';
-import * as path from 'path';
 
 @Injectable()
 export class AppService {
-  private translations: any = {};
-  private readonly logger = new Logger(AppService.name);
-
-  constructor(private readonly i18n: I18nService) {
-    // Manually load translations (workaround for nestjs-i18n v10.6.0)
-    try {
-      const enPath = path.join(process.cwd(), 'i18n/en/common.json');
-      const dePath = path.join(process.cwd(), 'i18n/de/common.json');
-      
-      if (fs.existsSync(enPath)) {
-        this.translations.en = JSON.parse(fs.readFileSync(enPath, 'utf-8'));
-      }
-      if (fs.existsSync(dePath)) {
-        this.translations.de = JSON.parse(fs.readFileSync(dePath, 'utf-8'));
-      }
-    } catch (error) {
-      this.logger.error('Failed to load translations:', error);
-    }
-  }
+  constructor(private readonly i18n: I18nService) {}
 
   getHello(lang: string): string {
-    return this.translate('api.hello', lang);
+    return this.i18n.translate('common.api.hello', { lang });
   }
 
   getGreeting(name: string, lang: string): string {
-    return this.translate('api.greeting', lang, { name });
+    return this.i18n.translate('common.api.greeting', { lang, args: { name } });
   }
 
   getPlural(count: number, lang: string): string {
-    return this.translate('api.plural', lang, { count }, count);
-  }
-
-  private translate(key: string, lang: string, args?: any, pluralForm?: number): string {
-    const keys = key.split('.');
-    let value: any = this.translations[lang];
-    
-    for (const k of keys) {
-      if (value && typeof value === 'object') {
-        value = value[k];
-      } else {
-        return key; // Fallback: return key if not found
-      }
-    }
-
-    if (typeof value === 'string') {
-      // Handle interpolation
-      if (args) {
-        for (const [argKey, argValue] of Object.entries(args)) {
-          value = value.replace(new RegExp(`{{${argKey}}}`, 'g'), String(argValue));
-        }
-      }
-      return value;
-    }
-    return key;
+    return this.i18n.translate('common.api.plural', { lang, args: { count } });
   }
 }
 ```
 
 **Key Points**:
-- **Manual JSON loading** for nestjs-i18n v10.6.0 compatibility
-- **Fallback** to translation key if not found
-- **Variable interpolation** with `{{name}}` syntax
-- **Pluralization** support (custom implementation)
+- Inject `I18nService` and call `this.i18n.translate(key, { lang, args })` directly
+- Translation key prefix is the **filename** (`common`) followed by the JSON path
+- **Variable interpolation** with `{{name}}` syntax handled by nestjs-i18n
+- **Fallback** to `fallbackLanguage` if a key or language is missing
 
 ---
 
@@ -382,42 +338,41 @@ export const HomePage: React.FC = () => {
 
 ---
 
-### Pattern 4: Language Context & Switcher
+### Pattern 4: Language Switcher
 
 **File**: `frontend/src/components/LanguageSwitcher.tsx`
 
 ```typescript
-import { createContext, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const LanguageContext = createContext({
-  language: 'en',
-  setLanguage: (lang: 'de' | 'en') => {},
-});
-
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { i18n } = useTranslation();
-  const [language, setLanguage] = useState<string>(i18n.language || 'en');
-
-  useEffect(() => {
-    if (language !== i18n.language) {
-      i18n.changeLanguage(language);
-      localStorage.setItem('language', language);
-    }
-  }, [language, i18n]);
+export const LanguageSwitcher: React.FC = () => {
+  const { t, i18n } = useTranslation();
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
-      {children}
-    </LanguageContext.Provider>
+    <div className="language-switcher">
+      <button
+        className={`lang-btn ${i18n.language === 'de' ? 'active' : ''}`}
+        onClick={() => i18n.changeLanguage('de')}
+        aria-label={t('common.language.de')}
+      >
+        DE
+      </button>
+      <button
+        className={`lang-btn ${i18n.language === 'en' ? 'active' : ''}`}
+        onClick={() => i18n.changeLanguage('en')}
+        aria-label={t('common.language.en')}
+      >
+        EN
+      </button>
+    </div>
   );
 };
 ```
 
 **Key Points**:
-- Use **React Context** for global language state
-- Persist language in **localStorage**
-- Call `i18n.changeLanguage(lang)` to switch
+- No custom Context or `useState` needed — i18next manages language state globally
+- `i18n.changeLanguage(lang)` switches the language and triggers a re-render everywhere
+- Persistence to `localStorage` is handled automatically by `i18next-browser-languagedetector`
 
 ---
 
@@ -538,15 +493,15 @@ t('pizza.quantity', { count: order.quantity });
 **Example: Slider with Label**
 
 ```tsx
-<label>{t('pizza.temperature')}</label>
+<label>{t('pizza.spicy')}</label>
 <div className="slider-container">
   <input
     type="range"
-    value={temperature}
-    onChange={(e) => setTemperature(parseInt(e.target.value))}
-    aria-label={t('pizza.tempLabel')}
+    value={order.spicy}
+    onChange={handleSpicyChange}
+    aria-label={t('pizza.spicyLabel')}
   />
-  <span>{temperature}%</span>
+  <span>{order.spicy}%</span>
 </div>
 ```
 
@@ -567,7 +522,7 @@ t('pizza.quantity', { count: order.quantity });
      - Select box (pizza type - 5 different pizzas)
      - Radio buttons (size: small/medium/large)
      - Checkboxes (extras)
-     - Sliders (temperature, spiciness)
+     - Slider (spiciness)
      - Number input (quantity)
      - Textarea (notes)
      - Buttons (submit, cancel)
@@ -665,9 +620,9 @@ t('common.home' as TranslationKeys);
 **Problem:** Clicking language buttons doesn't change text
 
 **Solutions:**
-- Verify `LanguageContext` is wrapping components
 - Check `i18n.changeLanguage()` is being called
 - Ensure translations exist for target language
+- Verify `i18n` is initialized before the component renders (`useSuspense: false` is set)
 
 #### 3. Backend Returns Empty Strings
 
@@ -693,7 +648,6 @@ t('common.home' as TranslationKeys);
 
 **Solutions:**
 - Verify `LanguageSwitcher` is imported and used in `Navigation.tsx`
-- Check `LanguageProvider` wraps the app in `App.tsx`
 - Ensure CSS styles are applied
 - Verify component is rendered in the correct location
 
@@ -802,17 +756,21 @@ i18n/
 **File**: `backend/src/app.module.ts`
 
 ```typescript
-import { I18nModule } from 'nestjs-i18n';
-import { join } from 'path';
+import { I18nModule, AcceptLanguageResolver, QueryResolver } from 'nestjs-i18n';
+import * as path from 'path';
 
 @Module({
   imports: [
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: join(__dirname, '/i18n/'),
+        path: path.join(__dirname, 'i18n/'),
         watch: true, // Live reload
       },
+      resolvers: [
+        { use: QueryResolver, options: ['lang'] }, // ?lang=de
+        AcceptLanguageResolver,                    // Accept-Language: de
+      ],
     }),
   ],
 })
@@ -821,8 +779,11 @@ export class AppModule {}
 
 **Key Options**:
 - `fallbackLanguage`: Default language if translation missing
-- `path`: Directory containing translation files
+- `path`: Directory containing translation files (relative to compiled `dist/`)
 - `watch`: Enable live reload in development
+- `resolvers`: Language detection strategies, evaluated in order:
+  1. `QueryResolver` — explicit `?lang=de` query parameter (highest priority)
+  2. `AcceptLanguageResolver` — standard HTTP `Accept-Language` header (e.g. sent by browsers)
 
 ---
 
@@ -831,27 +792,32 @@ export class AppModule {}
 **File**: `backend/src/app.controller.ts`
 
 ```typescript
+import { I18nLang } from 'nestjs-i18n';
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(@Query('lang') lang: string = 'en'): string {
+  getHello(@I18nLang() lang: string): string {
     return this.appService.getHello(lang);
   }
 
   @Get('greeting')
   getGreeting(
     @Query('name') name: string = 'World',
-    @Query('lang') lang: string = 'en'
+    @I18nLang() lang: string,
   ): string {
     return this.appService.getGreeting(name, lang);
   }
 }
 ```
 
+`@I18nLang()` resolves the language automatically via the configured resolvers (see module config above). The controller does not need to know which resolution strategy was used.
+
 **Endpoints**:
-- `GET /?lang=de` → "Hallo Welt"
+- `GET /?lang=de` → "Hallo Welt" (via QueryResolver)
+- `GET /` with header `Accept-Language: de` → "Hallo Welt" (via AcceptLanguageResolver)
 - `GET /greeting?name=Max&lang=en` → "Hello, Max!"
 
 ---
@@ -925,19 +891,21 @@ import { Trans } from 'react-i18next';
 
 ```typescript
 export const LanguageSwitcher: React.FC = () => {
-  const { language, setLanguage } = useContext(LanguageContext);
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="language-switcher">
       <button
-        className={`lang-btn ${language === 'de' ? 'active' : ''}`}
-        onClick={() => setLanguage('de')}
+        className={`lang-btn ${i18n.language === 'de' ? 'active' : ''}`}
+        onClick={() => i18n.changeLanguage('de')}
+        aria-label={t('common.language.de')}
       >
         DE
       </button>
       <button
-        className={`lang-btn ${language === 'en' ? 'active' : ''}`}
-        onClick={() => setLanguage('en')}
+        className={`lang-btn ${i18n.language === 'en' ? 'active' : ''}`}
+        onClick={() => i18n.changeLanguage('en')}
+        aria-label={t('common.language.en')}
       >
         EN
       </button>
@@ -949,7 +917,7 @@ export const LanguageSwitcher: React.FC = () => {
 **Features**:
 - Active state indication
 - Instant language switch
-- Persists to localStorage
+- Persists to localStorage via `i18next-browser-languagedetector`
 
 ---
 
