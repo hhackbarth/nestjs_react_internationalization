@@ -538,66 +538,33 @@ t('pizza.quantity', { count: order.quantity });
 
 ## ✅ Best Practices
 
-### 1. Translation Key Naming
+### 1. **Organize Translation Files**
+- Use **namespaces** for large apps
+- Group related keys (e.g., `forms`, `common`, `pages`)
+- Use **nested keys** for hierarchy
 
-**DO:**
-```json
-{
-  "navigation.home": "Home",
-  "forms.email.label": "Email Address",
-  "pages.order.title": "Order Page"
-}
-```
+### 2. **Use Descriptive Keys**
+- ✅ `pizza.size`
+- ❌ `text1`
 
-**DON'T:**
-```json
-{
-  "home": "Home",
-  "label": "Email Address",
-  "title": "Order Page"
-}
-```
+### 3. **Handle Missing Translations**
+- Set **fallback languages**
+- Enable **debug mode** in development
+- Log missing keys
 
-**Why:** Namespaced keys prevent collisions and improve maintainability.
+### 4. **Type Safety**
+- Generate **TypeScript types** from translation files
+- Use **IDE autocomplete**
 
-### 2. File Organization
+### 5. **Performance**
+- **Lazy load** translations for large apps
+- **Code split** by language
+- **Cache** translated content
 
-**DO:**
-- Group by feature/domain
-- Use consistent naming (`translation.json`, `common.json`)
-- Separate namespaces for different contexts
-
-**DON'T:**
-- Put all translations in one massive file
-- Mix frontend and backend translations
-- Use inconsistent naming conventions
-
-### 3. Type Safety
-
-**DO:**
-```typescript
-// Define translation key types
-type TranslationKeys = 
-  | 'common.home'
-  | 'common.about'
-  | 'pages.home.title';
-
-t('common.home' as TranslationKeys);
-```
-
-### 4. Fallback Languages
-
-**DO:**
-- Always define a fallback language
-- Use English as default for international apps
-- Test missing translations
-
-### 5. Performance
-
-**DO:**
-- Enable lazy loading for large apps
-- Use namespaces to split translations
-- Cache translations in localStorage
+### 6. **Testing**
+- Test **all languages** before deployment
+- Check **RTL** support (if needed)
+- Verify **long text** doesn't break layout
 
 ---
 
@@ -918,125 +885,6 @@ export const LanguageSwitcher: React.FC = () => {
 - Active state indication
 - Instant language switch
 - Persists to localStorage via `i18next-browser-languagedetector`
-
----
-
-## 🧩 UI Components
-
-### Supported Elements
-
-1. **Text Input** with label and placeholder
-2. **Select Box** (dropdown) with options
-3. **Checkboxes** for multiple selections
-4. **Radio Buttons** for single selection
-5. **Sliders** (range inputs) with labels
-6. **Number Input** with validation
-7. **Textarea** for multi-line text
-8. **Buttons** (primary/secondary)
-
-### Example: Form with i18n
-
-```typescript
-<div className="form-group">
-  <label htmlFor="size">{t('pizza.size')}</label>
-  <select id="size" value={order.size} onChange={handleSizeChange}>
-    <option value="">{t('forms.selectSize')}</option>
-    <option value="small">{t('pizza.sizeSmall')}</option>
-    <option value="medium">{t('pizza.sizeMedium')}</option>
-    <option value="large">{t('pizza.sizeLarge')}</option>
-  </select>
-</div>
-```
-
----
-
-## ✅ Best Practices
-
-### 1. **Organize Translation Files**
-- Use **namespaces** for large apps
-- Group related keys (e.g., `forms`, `common`, `pages`)
-- Use **nested keys** for hierarchy
-
-### 2. **Use Descriptive Keys**
-- ✅ `pizza.size`
-- ❌ `text1`
-
-### 3. **Handle Missing Translations**
-- Set **fallback languages**
-- Enable **debug mode** in development
-- Log missing keys
-
-### 4. **Type Safety**
-- Generate **TypeScript types** from translation files
-- Use **IDE autocomplete**
-
-### 5. **Performance**
-- **Lazy load** translations for large apps
-- **Code split** by language
-- **Cache** translated content
-
-### 6. **Testing**
-- Test **all languages** before deployment
-- Check **RTL** support (if needed)
-- Verify **long text** doesn't break layout
-
----
-
-## 🐛 Troubleshooting
-
-### Backend Issues
-
-**Problem**: Translations not loading
-```bash
-# Check file paths
-ls backend/src/i18n/en/
-ls backend/src/i18n/de/
-
-# Verify JSON syntax
-cat backend/src/i18n/en/common.json | python -m json.tool
-```
-
-**Problem**: Live reload not working
-```bash
-# Ensure watch: true in I18nModule
-# Restart backend if changes not detected
-```
-
----
-
-### Frontend Issues
-
-**Problem**: Language not switching
-```bash
-# Clear localStorage
-localStorage.removeItem('language')
-
-# Check i18n configuration
-# Ensure LanguageDetector is used
-```
-
-**Problem**: Translations showing keys instead of text
-```bash
-# Check key spelling
-# Ensure translation files are imported
-# Check i18n.init in main.tsx
-```
-
----
-
-## 📝 License
-
-MIT License - feel free to use this code for learning and educational purposes.
-
----
-
-## 🤝 Contributing
-
-This is a demo project for educational purposes. Feel free to:
-- Report issues
-- Suggest improvements
-- Add new UI elements
-- Extend translation coverage
 
 ---
 
