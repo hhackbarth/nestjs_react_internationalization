@@ -30,6 +30,7 @@ This project showcases how to build a multi-language web application that suppor
 - [Best Practices](#best-practices)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
+- [Additional Resources](#additional-resources)
 
 ---
 
@@ -145,7 +146,7 @@ Multi-language routes (`/` and `/order`).
 
 ```bash
 # Navigate to project
-cd /home/hacky/nestjs_react_internationalization
+cd nestjs_react_internationalization
 
 # Install Backend dependencies
 cd backend
@@ -196,31 +197,31 @@ curl http://localhost:3000/plural?count=3&lang=de
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                     User Browser                         │
+│                     User Browser                        │
 └─────────────────────────────────────────────────────────┘
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────┐
-│                   React Frontend                         │
+│                   React Frontend                        │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
 │  │  Language   │  │   Pages     │  │  UI Components  │  │
 │  │  Switcher   │  │  (Routes)   │  │  (Forms, etc.)  │  │
 │  └─────────────┘  └─────────────┘  └─────────────────┘  │
-│                           │                               │
-│                    i18next Engine                         │
-│              (react-i18next + i18next)                    │
+│                           │                             │
+│                    i18next Engine                       │
+│              (react-i18next + i18next)                 │
 └─────────────────────────────────────────────────────────┘
                            │
                            ▼ (CORS enabled)
 ┌─────────────────────────────────────────────────────────┐
-│                   NestJS Backend                         │
+│                   NestJS Backend                        │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
 │  │   Routes    │  │  Services   │  │  i18nService    │  │
 │  │  (API)      │  │  (Logic)    │  │  (Translations) │  │
 │  └─────────────┘  └─────────────┘  └─────────────────┘  │
-│                           │                               │
-│                    I18nModule                            │
-│              (nestjs-i18n)                               │
+│                           │                             │
+│                    I18nModule                           │
+│              (nestjs-i18n)                              │
 └─────────────────────────────────────────────────────────┘
                            │
                            ▼
@@ -394,15 +395,13 @@ export const LanguageSwitcher: React.FC = () => {
 
 ```typescript
 // Backend
-this.i18n.translate('api.plural', { 
-  lang, 
+this.i18n.translate('common.api.plural', {
+  lang,
   args: { count },
-  plural: count === 1 ? 'one' : 'other'
 });
-
-// Frontend
-t('pizza.quantity', { count: order.quantity });
 ```
+
+In this demo, pluralization is currently demonstrated on the backend. For frontend pluralization with i18next, define a plural-aware translation key first and then call `t('your.key', { count })`.
 
 ---
 
@@ -504,172 +503,6 @@ t('pizza.quantity', { count: order.quantity });
   <span>{order.spicy}%</span>
 </div>
 ```
-
----
-
-## 🎨 UI Components
-
-### Pages
-
-1. **HomePage** (`/`)
-   - Welcome message
-   - Feature list
-   - Call-to-action button
-
-2. **OrderPage** (`/order`)
-   - Pizza ordering form with all UI elements demonstrated:
-     - Text input (customer ID)
-     - Select box (pizza type - 5 different pizzas)
-     - Radio buttons (size: small/medium/large)
-     - Checkboxes (extras)
-     - Slider (spiciness)
-     - Number input (quantity)
-     - Textarea (notes)
-     - Buttons (submit, cancel)
-
-### Components
-
-- **LanguageSwitcher**: DE/EN toggle buttons
-- **Navigation**: Menu with active state
-- **HomePage**: Static content page
-- **OrderPage**: Interactive form page
-
----
-
-## ✅ Best Practices
-
-### 1. **Organize Translation Files**
-- Use **namespaces** for large apps
-- Group related keys (e.g., `forms`, `common`, `pages`)
-- Use **nested keys** for hierarchy
-
-### 2. **Use Descriptive Keys**
-- ✅ `pizza.size`
-- ❌ `text1`
-
-### 3. **Handle Missing Translations**
-- Set **fallback languages**
-- Enable **debug mode** in development
-- Log missing keys
-
-### 4. **Type Safety**
-- Generate **TypeScript types** from translation files
-- Use **IDE autocomplete**
-
-### 5. **Performance**
-- **Lazy load** translations for large apps
-- **Code split** by language
-- **Cache** translated content
-
-### 6. **Testing**
-- Test **all languages** before deployment
-- Check **RTL** support (if needed)
-- Verify **long text** doesn't break layout
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#### 1. Translations Not Loading
-
-**Problem:** Keys show as `translation.key` instead of actual text
-
-**Solutions:**
-- Check file paths in i18n configuration
-- Verify JSON files are valid (use JSON lint)
-- Ensure `watch: true` is set for development
-- Restart backend server
-
-#### 2. Language Switcher Not Working
-
-**Problem:** Clicking language buttons doesn't change text
-
-**Solutions:**
-- Check `i18n.changeLanguage()` is being called
-- Ensure translations exist for target language
-- Verify `i18n` is initialized before the component renders (`useSuspense: false` is set)
-
-#### 3. Backend Returns Empty Strings
-
-**Problem:** API returns empty translations
-
-**Solutions:**
-- Check `lang` query parameter is passed
-- Verify translation files exist in correct directory
-- Check `I18nModule` configuration
-
-#### 4. Translations Show as Keys (e.g., "home.title")
-
-**Problem:** Frontend displays translation keys instead of actual text
-
-**Solutions:**
-- **Verify i18n configuration**: Ensure `resources` in `i18n.ts` matches the structure
-- **Clear browser cache**: Sometimes cached translations persist
-- **Check namespace**: Make sure `defaultNS` is set correctly
-
-#### 5. Language Switcher Not Visible
-
-**Problem:** Language switcher buttons don't appear in navigation
-
-**Solutions:**
-- Verify `LanguageSwitcher` is imported and used in `Navigation.tsx`
-- Ensure CSS styles are applied
-- Verify component is rendered in the correct location
-
-#### 6. TypeScript Errors
-
-**Problem:** "Property does not exist on type"
-
-**Solutions:**
-- Ensure translation keys match exactly
-- Add type definitions for translation keys
-- Restart TypeScript language server
-
----
-
-## 📚 Learning Resources
-
-### Official Documentation
-
-- [nestjs-i18n Documentation](https://nestjs-i18n.com/)
-- [react-i18next Documentation](https://react.i18next.com/)
-- [i18next Core](https://www.i18next.com/)
-
-### Tutorials
-
-- [NestJS i18n Setup Guide](https://nestjs-i18n.com/docs/getting-started)
-- [React i18next Tutorial](https://react.i18next.com/latest/usetranslation-hook)
-- [i18n Best Practices](https://www.i18nworkflow.com/best-practices)
-
----
-
-## 📄 License
-
-This project is provided for educational purposes. Feel free to use and modify as needed.
-
----
-
-## 🤝 Contributing
-
-This is a demonstration project. Feel free to:
-- Fork and modify
-- Use as a learning resource
-- Adapt for your own projects
-
----
-
-## 📞 Support
-
-For questions or issues:
-1. Check the [Troubleshooting](#-troubleshooting) section
-2. Review the official documentation links
-3. Search for similar issues in the library repositories
-
----
-
-**Happy Coding! 🚀**
 
 ---
 
@@ -888,13 +721,167 @@ export const LanguageSwitcher: React.FC = () => {
 
 ---
 
+## 🎨 UI Components
+
+### Pages
+
+1. **HomePage** (`/`)
+  - Welcome message
+  - Feature list
+  - Call-to-action button
+
+2. **OrderPage** (`/order`)
+  - Pizza ordering form with all UI elements demonstrated:
+    - Text input (customer ID)
+    - Select box (pizza type - 5 different pizzas)
+    - Radio buttons (size: small/medium/large)
+    - Checkboxes (extras)
+    - Slider (spiciness)
+    - Number input (quantity)
+    - Textarea (notes)
+    - Buttons (submit, cancel)
+
+### Components
+
+- **LanguageSwitcher**: DE/EN toggle buttons
+- **Navigation**: Menu with active state
+- **HomePage**: Static content page
+- **OrderPage**: Interactive form page
+
+---
+
+## ✅ Best Practices
+
+### 1. **Organize Translation Files**
+- Use **namespaces** for large apps
+- Group related keys (e.g., `forms`, `common`, `pages`)
+- Use **nested keys** for hierarchy
+
+### 2. **Use Descriptive Keys**
+- ✅ `pizza.size`
+- ❌ `text1`
+
+### 3. **Handle Missing Translations**
+- Set **fallback languages**
+- Enable **debug mode** in development
+- Log missing keys
+
+### 4. **Type Safety**
+- Generate **TypeScript types** from translation files
+- Use **IDE autocomplete**
+
+### 5. **Performance**
+- **Lazy load** translations for large apps
+- **Code split** by language
+- **Cache** translated content
+
+### 6. **Testing**
+- Test **all languages** before deployment
+- Check **RTL** support (if needed)
+- Verify **long text** doesn't break layout
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### 1. Translations Not Loading
+
+**Problem:** Keys show as `translation.key` instead of actual text
+
+**Solutions:**
+- Check file paths in i18n configuration
+- Verify JSON files are valid (use JSON lint)
+- Ensure `watch: true` is set for development
+- Restart backend server
+
+#### 2. Language Switcher Not Working
+
+**Problem:** Clicking language buttons doesn't change text
+
+**Solutions:**
+- Check `i18n.changeLanguage()` is being called
+- Ensure translations exist for target language
+- Verify `i18n` is initialized before the component renders (`useSuspense: false` is set)
+
+#### 3. Backend Returns Empty Strings
+
+**Problem:** API returns empty translations
+
+**Solutions:**
+- Check `lang` query parameter is passed
+- Verify translation files exist in correct directory
+- Check `I18nModule` configuration
+
+#### 4. Translations Show as Keys (e.g., "home.title")
+
+**Problem:** Frontend displays translation keys instead of actual text
+
+**Solutions:**
+- **Verify i18n configuration**: Ensure `resources` in `i18n.ts` matches the structure
+- **Clear browser cache**: Sometimes cached translations persist
+- **Check namespace**: Make sure `defaultNS` is set correctly
+
+#### 5. Language Switcher Not Visible
+
+**Problem:** Language switcher buttons don't appear in navigation
+
+**Solutions:**
+- Verify `LanguageSwitcher` is imported and used in `Navigation.tsx`
+- Ensure CSS styles are applied
+- Verify component is rendered in the correct location
+
+#### 6. TypeScript Errors
+
+**Problem:** "Property does not exist on type"
+
+**Solutions:**
+- Ensure translation keys match exactly
+- Add type definitions for translation keys
+- Restart TypeScript language server
+
+---
+
+## 📄 License
+
+This project is provided for educational purposes. Feel free to use and modify as needed.
+
+---
+
 ## 📚 Additional Resources
+
+### Documentation
 
 - [nestjs-i18n Documentation](https://nestjs-i18n.com/)
 - [react-i18next Documentation](https://react.i18next.com/)
 - [i18next Documentation](https://www.i18next.com/)
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [React Documentation](https://react.dev/)
+
+### Guides
+
+- [NestJS i18n Setup Guide](https://nestjs-i18n.com/docs/getting-started)
+- [React i18next Tutorial](https://react.i18next.com/latest/usetranslation-hook)
+- [i18n Best Practices](https://www.i18nworkflow.com/best-practices)
+
+---
+
+## 🤝 Contributing
+
+This is a demonstration project. Feel free to:
+- Fork and modify
+- Use as a learning resource
+- Adapt for your own projects
+
+---
+
+## 📞 Support
+
+For questions or issues:
+1. Check the [Troubleshooting](#troubleshooting) section.
+2. Review the documentation and guides in [Additional Resources](#additional-resources).
+3. Search for similar issues in the library repositories.
 
 ---
 
