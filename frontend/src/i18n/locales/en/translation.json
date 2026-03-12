@@ -1,0 +1,70 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "Order Pizza",
+    "footer": "© 2026 i18n Demo. All rights reserved.",
+    "language": {
+      "de": "Deutsch",
+      "en": "English"
+    }
+  },
+  "home": {
+    "title": "Welcome to i18n Demo",
+    "description": "This application demonstrates how to implement Internationalization/Localization (i18n) in a fullstack application with NestJS and React. Switch the language at the top right and explore the various UI elements.",
+    "features": {
+      "title": "Features",
+      "feature1": "German and English language support",
+      "feature2": "Live language switching",
+      "feature3": "Various UI components",
+      "feature4": "Backend and frontend translations"
+    },
+    "cta": "Go to Pizza Page"
+  },
+  "pizza": {
+    "title": "Order Pizza",
+    "description": "Configure your ideal pizza with our various UI elements.",
+    "customerId": "Customer ID",
+    "customerIdPlaceholder": "Your customer ID",
+    "pizzaSelection": "Select pizza",
+    "pizzas": {
+      "margherita": "Margherita - Classic tomato sauce, mozzarella, fresh basil",
+      "pepperoni": "Pepperoni - Spicy pepperoni, tomato sauce, mozzarella",
+      "vegetariana": "Vegetariana - Mushrooms, peppers, onions, tomato sauce",
+      "quattro": "Quattro Formaggi - Four cheese varieties, tomato sauce",
+      "prosciutto": "Prosciutto - Ham, tomato sauce, mozzarella"
+    },
+    "size": "Size",
+    "sizeSmall": "small (25cm)",
+    "sizeMedium": "medium (32cm)",
+    "sizeLarge": "large (40cm)",
+    "extras": "Extras",
+    "extraMushrooms": "Mushrooms",
+    "extraOlives": "Olives",
+    "extraOnions": "Onions",
+    "extraPepperoni": "Pepperoni",
+    "temperature": "Temperature",
+    "tempLabel": "Select desired temperature",
+    "spicy": "Spicy",
+    "spicyLabel": "Adjust spiciness level",
+    "quantity": "Quantity",
+    "quantityLabel": "Number of pizzas",
+    "notes": "Notes",
+    "notesPlaceholder": "Additional notes...",
+    "submit": "Order",
+    "cancel": "Cancel",
+    "success": "Thank you for your order!",
+    "orderSummary": "Order Summary"
+  },
+  "forms": {
+    "required": "Required",
+    "email": "Email",
+    "emailPlaceholder": "Your email address",
+    "selectSize": "Please select...",
+    "radioSelect": "Please select an option",
+    "checkboxSelect": "Please select options"
+  },
+  "navigation": {
+    "home": "Home",
+    "order": "Order"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "common": {
+    "home": "Startseite",
+    "about": "Pizza bestellen",
+    "footer": "© 2026 i18n Demo. Alle Rechte vorbehalten.",
+    "language": {
+      "de": "Deutsch",
+      "en": "English"
+    }
+  },
+  "home": {
+    "title": "Willkommen zur i18n Demo",
+    "description": "Diese Anwendung zeigt, wie Internationalization/Localization (i18n) in einer Fullstack-Application mit NestJS und React implementiert wird. Wechseln Sie die Sprache oben rechts und erkunden Sie die verschiedenen UI-Elemente.",
+    "features": {
+      "title": "Features",
+      "feature1": "Deutsche und Englische Sprache",
+      "feature2": "Live-Sprachumschaltung",
+      "feature3": "Verschiedene UI-Komponenten",
+      "feature4": "Backend- und Frontend-Übersetzungen"
+    },
+    "cta": "Zur Pizza-Seite"
+  },
+  "pizza": {
+    "title": "Pizza bestellen",
+    "description": "Konfigurieren Sie Ihre ideale Pizza mit unseren verschiedenen UI-Elementen.",
+    "customerId": "Kundennummer",
+    "customerIdPlaceholder": "Ihre Kundennummer",
+    "pizzaSelection": "Pizza auswählen",
+    "pizzas": {
+      "margherita": "Margherita - Klassische Tomatensoße, Mozzarella, frisches Basilikum",
+      "pepperoni": "Pepperoni - Scharfe Pepperoni, Tomatensoße, Mozzarella",
+      "vegetariana": "Vegetariana - Pilze, Paprika, Zwiebeln, Tomatensoße",
+      "quattro": "Quattro Formaggi - Vier Käsesorten, Tomatensoße",
+      "prosciutto": "Prosciutto - Schinken, Tomatensoße, Mozzarella"
+    },
+    "size": "Größe",
+    "sizeSmall": "klein (25cm)",
+    "sizeMedium": "mittel (32cm)",
+    "sizeLarge": "groß (40cm)",
+    "extras": "Extras",
+    "extraMushrooms": "Pilze",
+    "extraOlives": "Oliven",
+    "extraOnions": "Zwiebeln",
+    "extraPepperoni": "Pepperoni",
+    "temperature": "Temperatur",
+    "tempLabel": "Wählen Sie die gewünschte Temperatur",
+    "spicy": "Scharf",
+    "spicyLabel": "Schärfe einstellen",
+    "quantity": "Menge",
+    "quantityLabel": "Anzahl der Pizzen",
+    "notes": "Notizen",
+    "notesPlaceholder": "Zusätzliche Anmerkungen...",
+    "submit": "Bestellen",
+    "cancel": "Abbrechen",
+    "success": "Vielen Dank für Ihre Bestellung!",
+    "orderSummary": "Bestellzusammenfassung"
+  },
+  "forms": {
+    "required": "Erforderlich",
+    "email": "E-Mail",
+    "emailPlaceholder": "Ihre E-Mail-Adresse",
+    "selectSize": "Bitte wählen...",
+    "radioSelect": "Bitte wählen Sie eine Option",
+    "checkboxSelect": "Bitte wählen Sie Optionen"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "order": "Bestellen"
+  }
+}
