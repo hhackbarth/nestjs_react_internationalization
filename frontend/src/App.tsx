@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LanguageProvider } from './components/LanguageSwitcher';
 import { Navigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
 import { OrderPage } from './components/OrderPage';
@@ -14,16 +13,14 @@ const Footer: React.FC = () => {
 
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/order" element={<OrderPage />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </LanguageProvider>
+    <Router>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/order" element={<OrderPage />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 

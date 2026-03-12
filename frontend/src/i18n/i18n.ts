@@ -30,7 +30,12 @@ i18n
     interpolation: {
       escapeValue: false, // React already escapes
     },
-    
+
+    // Disable Suspense to prevent translation key flicker on init
+    react: {
+      useSuspense: false,
+    },
+
     // Debug mode (set to false in production)
     debug: import.meta.env?.MODE === 'development',
     

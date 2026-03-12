@@ -1,7 +1,5 @@
 {
   "common": {
-    "home": "Home",
-    "about": "Order Pizza",
     "footer": "© 2026 i18n Demo. All rights reserved.",
     "language": {
       "de": "Deutsch",
@@ -42,8 +40,6 @@
     "extraOlives": "Olives",
     "extraOnions": "Onions",
     "extraPepperoni": "Pepperoni",
-    "temperature": "Temperature",
-    "tempLabel": "Select desired temperature",
     "spicy": "Spicy",
     "spicyLabel": "Adjust spiciness level",
     "quantity": "Quantity",
@@ -57,8 +53,6 @@
   },
   "forms": {
     "required": "Required",
-    "email": "Email",
-    "emailPlaceholder": "Your email address",
     "selectSize": "Please select...",
     "radioSelect": "Please select an option",
     "checkboxSelect": "Please select options"

@@ -72,16 +72,11 @@ nestjs_react_internationalization/
 │   │   ├── app.module.ts      # Root module with I18nModule
 │   │   ├── app.controller.ts  # API endpoints
 │   │   ├── app.service.ts     # Service with i18n logic
-│   │   └── i18n/              # Translation files (runtime)
+│   │   └── i18n/              # Translation source files (copied to dist/ on build)
 │   │       ├── en/
 │   │       │   └── common.json
 │   │       └── de/
 │   │           └── common.json
-│   ├── i18n/                  # Translation files (compiled)
-│   │   ├── en/
-│   │   │   └── common.json
-│   │   └── de/
-│   │       └── common.json
 │   ├── package.json
 │   └── tsconfig.json
 │

@@ -6,10 +6,9 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "**/*.json",
-        "outDir": "dist/src"
+        "include": "i18n/**/*",
+        "watchAssets": true
       }
-    ],
-    "watchAssets": true
+    ]
   }
 }

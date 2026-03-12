@@ -6,7 +6,6 @@ interface PizzaOrder {
   pizzaType: string;
   size: string;
   extras: string[];
-  temperature: number;
   spicy: number;
   quantity: number;
   notes: string;
@@ -19,7 +18,6 @@ export const OrderPage: React.FC = () => {
     pizzaType: '',
     size: '',
     extras: [],
-    temperature: 50,
     spicy: 30,
     quantity: 1,
     notes: '',
@@ -47,10 +45,6 @@ export const OrderPage: React.FC = () => {
     }));
   };
 
-  const handleTemperatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOrder((prev) => ({ ...prev, temperature: parseInt(e.target.value) }));
-  };
-
   const handleSpicyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOrder((prev) => ({ ...prev, spicy: parseInt(e.target.value) }));
   };
@@ -71,7 +65,6 @@ export const OrderPage: React.FC = () => {
       pizzaType: '',
       size: '',
       extras: [],
-      temperature: 50,
       spicy: 30,
       quantity: 1,
       notes: '',
@@ -190,24 +183,6 @@ export const OrderPage: React.FC = () => {
             </label>
           </div>
         </fieldset>
-
-        {/* Slider with Label */}
-        <div className="form-group">
-          <label htmlFor="temperature">{t('pizza.temperature')}</label>
-          <div className="slider-container">
-            <input
-              type="range"
-              id="temperature"
-              name="temperature"
-              min="0"
-              max="100"
-              value={order.temperature}
-              onChange={handleTemperatureChange}
-              aria-label={t('pizza.tempLabel')}
-            />
-            <span className="slider-value">{order.temperature}%</span>
-          </div>
-        </div>
 
         {/* Slider for Spiciness */}
         <div className="form-group">

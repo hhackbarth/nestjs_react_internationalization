@@ -1,7 +1,5 @@
 {
   "common": {
-    "home": "Startseite",
-    "about": "Pizza bestellen",
     "footer": "© 2026 i18n Demo. Alle Rechte vorbehalten.",
     "language": {
       "de": "Deutsch",
@@ -42,8 +40,6 @@
     "extraOlives": "Oliven",
     "extraOnions": "Zwiebeln",
     "extraPepperoni": "Pepperoni",
-    "temperature": "Temperatur",
-    "tempLabel": "Wählen Sie die gewünschte Temperatur",
     "spicy": "Scharf",
     "spicyLabel": "Schärfe einstellen",
     "quantity": "Menge",
@@ -57,8 +53,6 @@
   },
   "forms": {
     "required": "Erforderlich",
-    "email": "E-Mail",
-    "emailPlaceholder": "Ihre E-Mail-Adresse",
     "selectSize": "Bitte wählen...",
     "radioSelect": "Bitte wählen Sie eine Option",
     "checkboxSelect": "Bitte wählen Sie Optionen"

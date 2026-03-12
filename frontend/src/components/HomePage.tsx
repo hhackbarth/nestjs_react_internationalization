@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export const HomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -18,6 +19,10 @@ export const HomePage: React.FC = () => {
           <li>{t('home.features.feature4')}</li>
         </ul>
       </section>
+
+      <Link to="/order" className="btn btn-primary">
+        {t('home.cta')}
+      </Link>
     </div>
   );
 };
